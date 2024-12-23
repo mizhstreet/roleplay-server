@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  username String?
+  email    String  @unique
+  password String
+  role     String
+
+  // Relationship reff
+  orders   Order[]
+  cartItem CartItem[]
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  // Relationship reff
+  product Product[]
+}
+
+model Product {
+  id       Int    @id @default(autoincrement())
+  title    String
+  price    Float
+  stars    Int
+  rates    Int
+  discount Int
+  quantity Int
+  details  String
+  imageSrc String
+
+  categoryId Int? // Foreign key to Category
+  category   Category? @relation(fields: [categoryId], references: [id])
+
+  // Relationship reff
+  orderItems OrderItem[]
+  cartItem   CartItem[]
+}
+
+model Order {
+  id          Int      @id @default(autoincrement())
+  totalAmount Float
+  status      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  userId Int // Foreign key to User
+  user   User @relation(fields: [userId], references: [id])
+
+  // Relationship reff
+  orderItems OrderItem[]
+}
+
+model OrderItem {
+  id       Int   @id @default(autoincrement())
+  quantity Int
+  subtotal Float
+
+  orderId Int // Foreign key to Order
+  order   Order @relation(fields: [orderId], references: [id])
+
+  productId Int // Foreign key to Product
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model CartItem {
+  quantity Int
+
+  userId Int // Foreign key to User
+  user   User @relation(fields: [userId], references: [id])
+
+  productId Int // Foreign key to Product
+  product   Product @relation(fields: [productId], references: [id])
+
+  // Composite primary key
+  @@id([productId, userId])
+}
