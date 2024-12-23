@@ -33,19 +33,25 @@ app.use(
     saveUninitialized: false,
     cookie: {
       name: "qid",
+      path: "/",
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 7 * 365,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : undefined,
       domain:
         process.env.NODE_ENV === "production"
-          ? "creamyy.mrmbiuzz.link"
+          ? "process.env.ORIGIN_URL"
           : "localhost",
     },
   })
 );
 app.use(router);
+app.get("/health", (_, res) => {
+  res.status(200);
+  res.send("OK");
+});
 
 app.listen(PORT, () => {
+  console.log(process.env.NODE_ENV);
   console.log(`App listening on port http://localhost:${PORT}`);
 });

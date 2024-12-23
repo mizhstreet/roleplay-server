@@ -1,9 +1,9 @@
 // Modify this
-const ORIGIN_URL = "http://localhost:5173";
-const DB_HOST = "localhost";
+const ORIGIN_URL = "https://minhbt.link";
+const DB_HOST = "database-1.coidxbkl1hjm.us-east-1.rds.amazonaws.com";
 const DB_PORT = 5432;
 const DB_SCHEMA = "shop_db_schema";
-const POSTGRES_USER = "minhbiu";
+const POSTGRES_USER = "postgres";
 const POSTGRES_PASSWORD = "hoilamgi";
 const POSTGRES_DB = "shop_db";
 
@@ -12,6 +12,8 @@ const DATABASE_URL = `postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${DB_HO
 const PORT = 3000;
 
 const env = {
+  AWS_REGION: "us-east-1",
+  NODE_ENV: "production",
   ORIGIN_URL,
   DB_HOST,
   DB_PORT,
